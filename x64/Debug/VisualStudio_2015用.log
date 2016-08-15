@@ -1,4 +1,4 @@
-﻿2016/07/11 14:09:51 にビルドを開始しました。
+﻿2016/08/15 10:57:42 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\kazuki\Desktop\情報課題\DXLib\RPG Sample\VisualStudio_2015用.vcxproj" (Build ターゲット)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /IDxLibFile /ZI /nologo /W3 /WX- /sdl /Od /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt source\main.cpp
@@ -12,4 +12,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:01.38
+経過時間 00:00:01.73
