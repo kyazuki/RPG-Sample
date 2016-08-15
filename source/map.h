@@ -1,13 +1,12 @@
-//マップ画像
-//int map001Graph, map001_;
-//int map001X, map001Y;
-
 //マップ読み込み
 //マップ1
 void MAP001(void) {
-	//map001X = 1, map001Y = 1;
 	DrawGraph(map001X * -48 + 48, map001Y * -48 + 48, map001Graph, FALSE);
 }
+void MAP001Overlay(void) {
+	DrawGraph(map001X * -48 + 48, map001Y * -48 + 48, map001OverlayGraph, TRUE);
+}
+
 
 //当たり判定処理
 int wall(int place, int x, int y) {
