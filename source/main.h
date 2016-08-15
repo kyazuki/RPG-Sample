@@ -1,23 +1,179 @@
 //起動･終了処理
 int Start(void) {
-	SetGraphMode(48 * 17, 48 * 13, 32);
+	SetGraphMode(48 * 17, 48 * 13, 32, 60);
+	//SetOutApplicationLogValidFlag(false);
 	SetWindowSize(48 * 17, 48 * 13);
 	if (DxLib_Init() == -1) return -1;
 	ChangeWindowMode(1);
 	SetMainWindowText("RPG");
 	SetWindowIconID(101);
 	SetDrawScreen(DX_SCREEN_BACK);
-	Map001Graph = LoadGraph("resource/MAP/001.png");
-	Map001OverlayGraph = LoadGraph("resource/MAP/001o.png");
-	Map001_ = LoadSoftImage("resource/MAP/001_.png");
-	LoadDivGraph("resource/Character/Main/walk.png", 12, 3, 4, 48, 48, CharDiv);
+	ClearDrawScreen();
+
+	AddFontResourceEx("resource/font/mplus-1m-medium.ttf", FR_PRIVATE, NULL);
+	FontTitle = CreateFontToHandle("M+ 1m medium", 80, 8, DX_FONTTYPE_ANTIALIASING_EDGE_4X4, DX_CHARSET_DEFAULT, 3);
+	FontMain = CreateFontToHandle("M+ 1m medium", 24, 1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4, DX_CHARSET_DEFAULT);
+	White = GetColor(255, 255, 255);
+	Gray = GetColor(166, 161, 158);
+	if (FontTitle == -1) {
+		RemoveFontResourceEx("resource/font/mplus-1m-medium.ttf", FR_PRIVATE, NULL);
+		DxLib_End();
+		return 1;
+	}
 }
 
 int End(void) {
+	InitGraph();
+	InitSoundMem();
 	DxLib_End();
 	return 0;
 }
 
+//メモリ読み込み処理
+//画像
+void LoadAllGraphs(void) {
+	MSGLogGraph = LoadGraph("resource/System/window/main.png");
+	SelectGraph = LoadGraph("resource/System/select.png");
+
+	Map001Graph = LoadGraph("resource/MAP/001.png");
+	Map001OverlayGraph = LoadGraph("resource/MAP/001o.png");
+	Map001_ = LoadSoftImage("resource/MAP/001_.png");
+
+	LoadDivGraph("resource/Character/Main/walk.png", 12, 3, 4, 48, 48, CharDiv);
+}
+
+//音
+void LoadAllSounds(void) {
+	BGM[TITLE] = LoadSoundMem("resource/sounds/BGM/Theme1.ogg");
+	SE[SELECT] = LoadSoundMem("resource/sounds/SE/common/Cursor2.ogg");
+	SE[DECISION] = LoadSoundMem("resource/sounds/SE/common/Decision1.ogg");
+	SE[BUZZER] = LoadSoundMem("resource/sounds/SE/common/Buzzer1.ogg");
+}
+
+//音量設定
+void SettingsSounds(int BGMVo, int MEVo, int BGSVo, int SEVo) {
+	int i = 0;
+	do {
+		ChangeVolumeSoundMem(BGMVo, BGM[i]);
+		i++;
+	} while (i < 1);
+	i = 0;
+	do {
+		ChangeVolumeSoundMem(MEVo, ME[i]);
+		i++;
+	} while (i < 0);
+	i = 0;
+	do {
+		ChangeVolumeSoundMem(BGSVo, BGS[i]);
+		i++;
+	} while (i < 0);
+	i = 0;
+	do {
+		ChangeVolumeSoundMem(SEVo, SE[i]);
+		i++;
+	} while (i < 3);
+}
+
+//キーの押下フレーム数取得関数
+int UpdateKey() {
+	char tmpKey[256];
+	GetHitKeyStateAll(tmpKey);
+	for (int i = 0; i<256; i++) {
+		if (tmpKey[i] != 0) {
+			Key[i]++;
+		}
+		else {
+			Key[i] = 0;
+		}
+	}
+	return 0;
+}
+
+//タイトル
+void Title(void) {
+	int TitleGraph, TitleLogGraph, Bright = 0, Pal = 255, Flag = 0, Select = 0, SelectY = 400, SelectHeight = 38;
+	int LogBoxY = 0;
+	PlaySoundMem(BGM[TITLE], DX_PLAYTYPE_BACK);
+	TitleGraph = LoadGraph("resource/Title/title.png");
+	do {
+		SetDrawBright(Bright, Bright, Bright);
+		DrawGraph(0, 0, TitleGraph, FALSE);
+		DrawStringToHandle(305, 200, "Game", White, FontTitle);
+		ScreenFlip();
+		Bright = Bright + 5;
+	} while (Bright < 256);
+	WaitTimer(500);
+	TitleLogGraph = LoadGraph("resource/System/window/title.png");
+	do {
+		ClearDrawScreen();
+		DrawGraph(0, 0, TitleGraph, FALSE);
+		DrawStringToHandle(305, 200, "Game", White, FontTitle);
+		DrawModiGraph(288, 453 - LogBoxY, 527, 453 - LogBoxY, 527, 455 + LogBoxY, 288, 455 + LogBoxY, TitleLogGraph, TRUE);
+		ScreenFlip();
+		LogBoxY = LogBoxY + 7;
+	} while (LogBoxY <= 70);
+	while (1) {
+		ClearDrawScreen();
+		DrawGraph(0, 0, TitleGraph, FALSE);
+		DrawStringToHandle(305, 200, "Game", White, FontTitle);
+		DrawModiGraph(288, 383, 527, 383, 527, 525, 288, 525, TitleLogGraph, TRUE);
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, Pal);
+		DrawModiGraph(305, SelectY, 510, SelectY, 510, SelectY + 38, 305, SelectY + 38, SelectGraph, TRUE);
+		if (Pal == 255) Flag = 1;
+		if (Pal == 129) Flag = 0;
+
+		if (Flag == 1) Pal = Pal - 6;
+		if (Flag == 0) Pal = Pal + 6;
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		DrawStringToHandle(310, 405, "ニューゲーム", White, FontMain);
+		DrawStringToHandle(310, 440, "コンティニュー", Gray, FontMain);
+		DrawStringToHandle(310, 475, "オプション", White, FontMain);
+		ScreenFlip();
+
+		UpdateKey();
+		if (Key[KEY_INPUT_DOWN] == 1) {
+			if (SelectY == 434) { SelectY = 469; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			if (SelectY == 400) { SelectY = 434; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+		}
+		if (Key[KEY_INPUT_UP] == 1) {
+			if (SelectY == 434) { SelectY = 400; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			if (SelectY == 469) { SelectY = 434; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+		}
+		if (Key[KEY_INPUT_RETURN] == 1) {
+			if (SelectY == 400) {
+				PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK);
+				break;
+			}
+			if (SelectY == 434) { PlaySoundMem(SE[BUZZER], DX_PLAYTYPE_BACK); }
+			if (SelectY == 469) {
+				PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK);
+			}
+		}
+		if (ProcessMessage() < 0) break;
+	}
+	int BGMVol;
+	BGMVol = BGMVolume;
+	LogBoxY = 70;
+	do {
+		ClearDrawScreen();
+		SetDrawBright(Bright, Bright, Bright);
+		DrawGraph(0, 0, TitleGraph, FALSE);
+		DrawStringToHandle(305, 200, "Game", White, FontTitle);
+		if (LogBoxY > 0) DrawModiGraph(288, 453 - LogBoxY, 527, 453 - LogBoxY, 527, 455 + LogBoxY, 288, 455 + LogBoxY, TitleLogGraph, TRUE);
+		ScreenFlip();
+		ChangeVolumeSoundMem(BGMVol, BGM[TITLE]);
+		BGMVol = BGMVol - 2;
+		Bright = Bright - 5;
+		LogBoxY = LogBoxY - 7;
+	} while (BGMVol >= 0);
+	StopSoundMem(BGM[TITLE]);
+	ChangeVolumeSoundMem(128, BGM[TITLE]);
+	DeleteGraph(TitleGraph);
+	SetDrawBright(255, 255, 255);
+	WaitTimer(1000);
+}
 
 //キャラ描画関数
 void CharMain(int i) {
