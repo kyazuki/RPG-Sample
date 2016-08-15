@@ -1,10 +1,10 @@
 //マップ読み込み
 //マップ1
 void MAP001(void) {
-	DrawGraph(map001X * -48 + 48, map001Y * -48 + 48, map001Graph, FALSE);
+	DrawGraph(Map001RightX, Map001RightY, Map001Graph, FALSE);
 }
 void MAP001Overlay(void) {
-	DrawGraph(map001X * -48 + 48, map001Y * -48 + 48, map001OverlayGraph, TRUE);
+	DrawGraph(Map001RightX, Map001RightY, Map001OverlayGraph, TRUE);
 }
 
 
@@ -32,17 +32,9 @@ int wall(int place, int x, int y) {
 }
 
 int attackup(int MAP, int x, int y) {
-	if (wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 2 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 6 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 7 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 8) return 1;
-	else if (wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 3 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 7 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 9 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 11) return 1;
-	else if (wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 4 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 8 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 10 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 11) return 1;
-	else if (wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 5 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 6 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 9 || wall(MAP, (CharMainX + map001X - 1) * 48 - 48 + x, (CharMainY + map001Y - 1) * 48 - 48 + y) == 10) return 1;
-	else return 0;
-}
-
-int attackup2(int MAP, int x, int y) {
-	if (wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 1 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 2 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 6 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 7 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 8) return 1;
-	else if (wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 1 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 3 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 7 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 9 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 11) return 1;
-	else if (wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 1 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 4 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 8 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 10 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 11) return 1;
-	else if (wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 1 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 5 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 6 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 9 || wall(MAP, map001X * 48 - 48 + x, map001Y * 48 - 48 + y) == 10) return 1;
+	if (wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 2 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 6 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 7 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 8) return 1;
+	else if (wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 3 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 7 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 9 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 11) return 1;
+	else if (wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 4 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 8 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 10 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 11) return 1;
+	else if (wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 1 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 5 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 6 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 9 || wall(MAP, (CharMainX + Map001X - 1) * 48 - 48 + x, (CharMainY + Map001Y - 1) * 48 - 48 + y) == 10) return 1;
 	else return 0;
 }
