@@ -8,13 +8,13 @@ int Key[256];
 int Dash = 0, Cheat = 0;
 int FontTitle, FontMain, White, Gray;
 int OptionScreen, OptionScreenGAUSS, MSGLogGraph, SelectGraph, OptionGraph, Map001Graph, Map001OverlayGraph, Map001_;
-int Map001X = 2, Map001Y = 2;
+int MapX = 2, MapY = 2;
 int CharMainX = 9, CharMainY = 7;
 int CharDiv[12];
 int CharMainRightX = CharMainX * 48 - 48;
 int CharMainRightY = CharMainY * 48 - 48;
-int Map001RightX = Map001X * -48 + 48;
-int Map001RightY = Map001Y * -48 + 48;
+int MapRightX = MapX * -48 + 48;
+int MapRightY = MapY * -48 + 48;
 
 #include "map.h"
 #include "battle.h"
@@ -33,7 +33,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	PlaySoundMem(BGM[TOWN], DX_PLAYTYPE_BACK);
 	while(1) {
 		UpdateKey();
-		Move1();
+		Move();
 		if (Key[KEY_INPUT_ESCAPE] == 1 || Key[KEY_INPUT_X] == 1) { 
 			Option();
 			DrawGraph(0, 0, OptionScreen, FALSE);

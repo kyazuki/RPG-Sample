@@ -626,83 +626,147 @@ void CharMain(int i) {
 int U = 0, D = 0, L = 0, R = 0;
 int U1 = 0, U2 = 0, D1 = 0, D2 = 0, L1 = 0, L2 = 0, R1 = 0, R2 = 0;
 
-//キャラ主体移動補助関数
+//マップ移動補助関数
 void MoveSupportUP(int i)
-{
-	CharMainRightY = CharMainRightY - 3;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(15);
-}
+	{
+		MapRightY = MapRightY + 3;
+		if (MapRightY > 0) {
+			MapRightY = 0;
+			CharMainRightY = CharMainRightY - 3;
+		}
+		else if (CharMainRightY > 288) {
+			MapRightY = MapRightY - 3;
+			CharMainRightY = CharMainRightY - 3;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(15);
+	}
 void MoveSupportDOWN(int i)
-{
-	CharMainRightY = CharMainRightY + 3;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(15);
-}
+	{
+		MapRightY = MapRightY - 3;
+		if (MapRightY < -720 + (48 * 13)) {
+			MapRightY = -720 + (48 * 13);
+			CharMainRightY = CharMainRightY + 3;
+		}
+		else if (CharMainRightY < 288) {
+			MapRightY = MapRightY + 3;
+			CharMainRightY = CharMainRightY + 3;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(15);
+	}
 void MoveSupportLEFT(int i)
-{
-	CharMainRightX = CharMainRightX - 3;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(15);
-}
+	{
+		MapRightX = MapRightX + 3;
+		if (MapRightX > 0) {
+			MapRightX = 0;
+			CharMainRightX = CharMainRightX - 3;
+		}
+		else if (CharMainRightX > 384) {
+			MapRightX = MapRightX - 3;
+			CharMainRightX = CharMainRightX - 3;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(15);
+	}
 void MoveSupportRIGHT(int i)
-{
-	CharMainRightX = CharMainRightX + 3;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(15);
-}
+	{
+		MapRightX = MapRightX - 3;
+		if (MapRightX < -912 + (48 * 17)) {
+			MapRightX = -912 + (48 * 17);
+			CharMainRightX = CharMainRightX + 3;
+		}
+		else if (CharMainRightX < 384) {
+			MapRightX = MapRightX + 3;
+			CharMainRightX = CharMainRightX + 3;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(15);
+	}
 
 void MoveSupportDashUP(int i)
-{
-	CharMainRightY = CharMainRightY - 6;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(5);
-}
+	{
+		MapRightY = MapRightY + 6;
+		if (MapRightY > 0) {
+			MapRightY = 0;
+			CharMainRightY = CharMainRightY - 6;
+		}
+		else if (CharMainRightY > 288) {
+			MapRightY = MapRightY - 6;
+			CharMainRightY = CharMainRightY - 6;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(5);
+	}
 void MoveSupportDashDOWN(int i)
-{
-	CharMainRightY = CharMainRightY + 6;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(5);
-}
+	{
+		MapRightY = MapRightY - 6;
+		if (MapRightY < -720 + (48 * 13)) {
+			MapRightY = -720 + (48 * 13);
+			CharMainRightY = CharMainRightY + 6;
+		}
+		else if (CharMainRightY < 288) {
+			MapRightY = MapRightY + 6;
+			CharMainRightY = CharMainRightY + 6;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(5);
+	}
 void MoveSupportDashLEFT(int i)
-{
-	CharMainRightX = CharMainRightX - 6;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(5);
-}
+	{
+		MapRightX = MapRightX + 6;
+		if (MapRightX > 0) {
+			MapRightX = 0;
+			CharMainRightX = CharMainRightX - 6;
+		}
+		else if (CharMainRightX > 384) {
+			MapRightX = MapRightX - 6;
+			CharMainRightX = CharMainRightX - 6;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(5);
+	}
 void MoveSupportDashRIGHT(int i)
-{
-	CharMainRightX = CharMainRightX + 6;
-	ClearDrawScreen();
-	MAP001();
-	CharMain(i);
-	ScreenFlip();
-	WaitTimer(5);
-}
+	{
+		MapRightX = MapRightX - 6;
+		if (MapRightX < -912 + (48 * 17)) {
+			MapRightX = -912 + (48 * 17);
+			CharMainRightX = CharMainRightX + 6;
+		}
+		else if (CharMainRightX < 384) {
+			MapRightX = MapRightX + 6;
+			CharMainRightX = CharMainRightX + 6;
+		}
+		ClearDrawScreen();
+		MAP001();
+		CharMain(i);
+		ScreenFlip();
+		WaitTimer(5);
+	}
 
-//キャラ主体移動関数
-void Move1(void) {
+//マップ移動関数
+void Move(void) {
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
 		{
 			if (attackup(Map001_, 0, -24) != 1)
@@ -727,6 +791,7 @@ void Move1(void) {
 						MoveSupportUP(10);
 						MoveSupportUP(10);
 						MoveSupportUP(10);
+						MapY = (MapRightY - 48) / -48;
 						CharMainY = (CharMainRightY + 48) / 48;
 						U1 = 1;
 					}
@@ -748,6 +813,7 @@ void Move1(void) {
 						MoveSupportUP(10);
 						MoveSupportUP(10);
 						MoveSupportUP(10);
+						MapY = (MapRightY - 48) / -48;
 						CharMainY = (CharMainRightY + 48) / 48;
 						U2 = 1;
 					}
@@ -767,6 +833,7 @@ void Move1(void) {
 						MoveSupportDashUP(9);
 						MoveSupportDashUP(10);
 						MoveSupportDashUP(10);
+						MapY = (MapRightY - 48) / -48;
 						CharMainY = (CharMainRightY + 48) / 48;
 						U1 = 1;
 					}
@@ -780,459 +847,13 @@ void Move1(void) {
 						MoveSupportDashUP(11);
 						MoveSupportDashUP(10);
 						MoveSupportDashUP(10);
+						MapY = (MapRightY - 48) / -48;
 						CharMainY = (CharMainRightY + 48) / 48;
 						U2 = 1;
 					}
 
 					if (U1 == 1) { U = 1; U1 = 0; }
 					else if (U2 == 1) { U = 0; U2 = 0; }
-				}
-			}
-			else if (attackup(Map001_, 0, -24) == 1)
-			{
-				MAP001();
-				CharMain(10);
-				ScreenFlip();
-			}
-		}
-	else if (CheckHitKey(KEY_INPUT_DOWN) == 1)
-		{
-			if (attackup(Map001_, 0, 48 + 24) != 1)
-			{
-				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
-				{
-					if (D == 0)
-					{
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(0);
-						MoveSupportDOWN(0);
-						MoveSupportDOWN(0);
-						MoveSupportDOWN(0);
-						MoveSupportDOWN(0);
-						MoveSupportDOWN(0);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						CharMainY = (CharMainRightY + 48) / 48;
-						D1 = 1;
-					}
-					else if (D == 1)
-					{
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(2);
-						MoveSupportDOWN(2);
-						MoveSupportDOWN(2);
-						MoveSupportDOWN(2);
-						MoveSupportDOWN(2);
-						MoveSupportDOWN(2);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						MoveSupportDOWN(1);
-						CharMainY = (CharMainRightY + 48) / 48;
-						D2 = 1;
-					}
-
-					if (D1 == 1) { D = 1; D1 = 0; }
-					else if (D2 == 1) { D = 0; D2 = 0; }
-				}
-				else if (CheckHitKey(KEY_INPUT_LCONTROL) == 1 || Dash == TRUE)
-				{
-					if (D == 0)
-					{
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(0);
-						MoveSupportDashDOWN(0);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						CharMainY = (CharMainRightY + 48) / 48;
-						D1 = 1;
-					}
-					if (D == 1)
-					{
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(2);
-						MoveSupportDashDOWN(2);
-						MoveSupportDashDOWN(1);
-						MoveSupportDashDOWN(1);
-						CharMainY = (CharMainRightY + 48) / 48;
-						D2 = 1;
-					}
-
-					if (D1 == 1) D = 1; D1 = 0;
-					if (D2 == 1) D = 0; D2 = 0;
-				}
-			}
-			else if (attackup(Map001_, 0, 48 + 24) == 1)
-			{
-				MAP001();
-				CharMain(1);
-				ScreenFlip();
-			}
-		}
-	else if (CheckHitKey(KEY_INPUT_LEFT) == 1)
-		{
-			if (attackup(Map001_, -24, 0) != 1)
-			{
-				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
-				{
-					if (L == 0)
-					{
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(3);
-						MoveSupportLEFT(3);
-						MoveSupportLEFT(3);
-						MoveSupportLEFT(3);
-						MoveSupportLEFT(3);
-						MoveSupportLEFT(3);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						CharMainX = (CharMainRightX + 48) / 48;
-						L1 = 1;
-					}
-					else if (L == 1)
-					{
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(5);
-						MoveSupportLEFT(5);
-						MoveSupportLEFT(5);
-						MoveSupportLEFT(5);
-						MoveSupportLEFT(5);
-						MoveSupportLEFT(5);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						MoveSupportLEFT(4);
-						CharMainX = (CharMainRightX + 48) / 48;
-						L2 = 1;
-					}
-
-					if (L1 == 1) { L = 1; L1 = 0; }
-					else if (L2 == 1) { L = 0; L2 = 0; }
-				}
-				else if (CheckHitKey(KEY_INPUT_LCONTROL) == 1 || Dash == TRUE)
-				{
-					if (L == 0)
-					{
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(3);
-						MoveSupportDashLEFT(3);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						CharMainX = (CharMainRightX + 48) / 48;
-						L1 = 1;
-					}
-					else if (L == 1)
-					{
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(5);
-						MoveSupportDashLEFT(5);
-						MoveSupportDashLEFT(4);
-						MoveSupportDashLEFT(4);
-						CharMainX = (CharMainRightX + 48) / 48;
-						L2 = 1;
-					}
-
-					if (L1 == 1) { L = 1; L1 = 0; }
-					else if (L2 == 1) { L = 0; L2 = 0; }
-				}
-			}
-			else if (attackup(Map001_, -24, 0) == 1)
-			{
-				MAP001();
-				CharMain(4);
-				ScreenFlip();
-			}
-		}
-	else if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
-		{
-			if (attackup(Map001_, 48 + 24, 0) != 1)
-			{
-				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
-				{
-					if (R == 0)
-					{
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(6);
-						MoveSupportRIGHT(6);
-						MoveSupportRIGHT(6);
-						MoveSupportRIGHT(6);
-						MoveSupportRIGHT(6);
-						MoveSupportRIGHT(6);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						CharMainX = (CharMainRightX + 48) / 48;
-						R1 = 1;
-					}
-					else if (R == 1)
-					{
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(8);
-						MoveSupportRIGHT(8);
-						MoveSupportRIGHT(8);
-						MoveSupportRIGHT(8);
-						MoveSupportRIGHT(8);
-						MoveSupportRIGHT(8);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						MoveSupportRIGHT(7);
-						CharMainX = (CharMainRightX + 48) / 48;
-						R2 = 1;
-					}
-
-					if (R1 == 1) { R = 1; R1 = 0; }
-					else if (R2 == 1) { R = 0; R2 = 0; }
-				}
-				else if (CheckHitKey(KEY_INPUT_LCONTROL) == 1 || Dash == TRUE)
-				{
-					if (R == 0)
-					{
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(6);
-						MoveSupportDashRIGHT(6);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						CharMainX = (CharMainRightX + 48) / 48;
-						R1 = 1;
-					}
-					if (R == 1)
-					{
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(8);
-						MoveSupportDashRIGHT(8);
-						MoveSupportDashRIGHT(7);
-						MoveSupportDashRIGHT(7);
-						CharMainX = (CharMainRightX + 48) / 48;
-						R2 = 1;
-					}
-
-					if (R1 == 1) R = 1; R1 = 0;
-					if (R2 == 1) R = 0; R2 = 0;
-				}
-			}
-			else if (attackup(Map001_, 48 + 24, 0) == 1)
-			{
-				MAP001();
-				CharMain(7);
-				ScreenFlip();
-			}
-		}
-	}
-
-//マップ主体移動補助関数
-void Move2SupportUP(int i)
-	{
-		Map001RightY = Map001RightY + 3;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(15);
-	}
-void Move2SupportDOWN(int i)
-	{
-		Map001RightY = Map001RightY - 3;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(15);
-	}
-void Move2SupportLEFT(int i)
-	{
-		Map001RightX = Map001RightX + 3;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(15);
-	}
-void Move2SupportRIGHT(int i)
-	{
-		Map001RightX = Map001RightX - 3;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(15);
-	}
-
-void Move2SupportDashUP(int i)
-	{
-		Map001RightY = Map001RightY + 6;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(5);
-	}
-void Move2SupportDashDOWN(int i)
-	{
-		Map001RightY = Map001RightY - 6;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(5);
-	}
-void Move2SupportDashLEFT(int i)
-	{
-		Map001RightX = Map001RightX + 6;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(5);
-	}
-void Move2SupportDashRIGHT(int i)
-	{
-		Map001RightX = Map001RightX - 6;
-		ClearDrawScreen();
-		MAP001();
-		CharMain(i);
-		ScreenFlip();
-		WaitTimer(5);
-	}
-
-//マップ主体移動関数
-void Move2(void) {
-	if (CheckHitKey(KEY_INPUT_UP) == 1)
-		{
-			if (attackup(Map001_, 0, -24) != 1)
-			{
-				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
-				{
-					if (U == 0)
-					{
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(9);
-						Move2SupportUP(9);
-						Move2SupportUP(9);
-						Move2SupportUP(9);
-						Move2SupportUP(9);
-						Move2SupportUP(9);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Map001Y = (Map001RightY - 48) / -48;
-						U1 = 1;
-					}
-					if (U == 1)
-					{
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(11);
-						Move2SupportUP(11);
-						Move2SupportUP(11);
-						Move2SupportUP(11);
-						Move2SupportUP(11);
-						Move2SupportUP(11);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Move2SupportUP(10);
-						Map001Y = (Map001RightY - 48) / -48;
-						U2 = 1;
-					}
-
-					if (U1 == 1) U = 1; U1 = 0;
-					if (U2 == 1) U = 0; U2 = 0;
-				}
-				if (CheckHitKey(KEY_INPUT_LCONTROL) == 1 || Dash == TRUE)
-				{
-					if (U == 0)
-					{
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(9);
-						Move2SupportDashUP(9);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Map001Y = (Map001RightY - 48) / -48;
-						U1 = 1;
-					}
-					if (U == 1)
-					{
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(11);
-						Move2SupportDashUP(11);
-						Move2SupportDashUP(10);
-						Move2SupportDashUP(10);
-						Map001Y = (Map001RightY - 48) / -48;
-						U2 = 1;
-					}
-
-					if (U1 == 1) U = 1; U1 = 0;
-					if (U2 == 1) U = 0; U2 = 0;
 				}
 			}
 			if (attackup(Map001_, 0, -24) == 1)
@@ -1250,44 +871,46 @@ void Move2(void) {
 				{
 					if (D == 0)
 					{
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(0);
-						Move2SupportDOWN(0);
-						Move2SupportDOWN(0);
-						Move2SupportDOWN(0);
-						Move2SupportDOWN(0);
-						Move2SupportDOWN(0);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Map001Y = (Map001RightY - 48) / -48;
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(0);
+						MoveSupportDOWN(0);
+						MoveSupportDOWN(0);
+						MoveSupportDOWN(0);
+						MoveSupportDOWN(0);
+						MoveSupportDOWN(0);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MapY = (MapRightY - 48) / -48;
+						CharMainY = (CharMainRightY + 48) / 48;
 						D1 = 1;
 					}
 					else if (D == 1)
 					{
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(2);
-						Move2SupportDOWN(2);
-						Move2SupportDOWN(2);
-						Move2SupportDOWN(2);
-						Move2SupportDOWN(2);
-						Move2SupportDOWN(2);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Move2SupportDOWN(1);
-						Map001Y = (Map001RightY - 48) / -48;
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(2);
+						MoveSupportDOWN(2);
+						MoveSupportDOWN(2);
+						MoveSupportDOWN(2);
+						MoveSupportDOWN(2);
+						MoveSupportDOWN(2);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MoveSupportDOWN(1);
+						MapY = (MapRightY - 48) / -48;
+						CharMainY = (CharMainRightY + 48) / 48;
 						D2 = 1;
 					}
 
@@ -1298,28 +921,30 @@ void Move2(void) {
 				{
 					if (D == 0)
 					{
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(0);
-						Move2SupportDashDOWN(0);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Map001Y = (Map001RightY - 48) / -48;
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(0);
+						MoveSupportDashDOWN(0);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MapY = (MapRightY - 48) / -48;
+						CharMainY = (CharMainRightY + 48) / 48;
 						D1 = 1;
 					}
 					else if (D == 1)
 					{
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(2);
-						Move2SupportDashDOWN(2);
-						Move2SupportDashDOWN(1);
-						Move2SupportDashDOWN(1);
-						Map001Y = (Map001RightY - 48) / -48;
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(2);
+						MoveSupportDashDOWN(2);
+						MoveSupportDashDOWN(1);
+						MoveSupportDashDOWN(1);
+						MapY = (MapRightY - 48) / -48;
+						CharMainY = (CharMainRightY + 48) / 48;
 						D2 = 1;
 					}
 
@@ -1342,44 +967,46 @@ void Move2(void) {
 				{
 					if (L == 0)
 					{
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(3);
-						Move2SupportLEFT(3);
-						Move2SupportLEFT(3);
-						Move2SupportLEFT(3);
-						Move2SupportLEFT(3);
-						Move2SupportLEFT(3);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(3);
+						MoveSupportLEFT(3);
+						MoveSupportLEFT(3);
+						MoveSupportLEFT(3);
+						MoveSupportLEFT(3);
+						MoveSupportLEFT(3);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						L1 = 1;
 					}
 					else if (L == 1)
 					{
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(5);
-						Move2SupportLEFT(5);
-						Move2SupportLEFT(5);
-						Move2SupportLEFT(5);
-						Move2SupportLEFT(5);
-						Move2SupportLEFT(5);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Move2SupportLEFT(4);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(5);
+						MoveSupportLEFT(5);
+						MoveSupportLEFT(5);
+						MoveSupportLEFT(5);
+						MoveSupportLEFT(5);
+						MoveSupportLEFT(5);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MoveSupportLEFT(4);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						L2 = 1;
 					}
 
@@ -1390,33 +1017,35 @@ void Move2(void) {
 				{
 					if (L == 0)
 					{
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(3);
-						Move2SupportDashLEFT(3);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(3);
+						MoveSupportDashLEFT(3);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						L1 = 1;
 					}
-					if (L == 1)
+					else if (L == 1)
 					{
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(5);
-						Move2SupportDashLEFT(5);
-						Move2SupportDashLEFT(4);
-						Move2SupportDashLEFT(4);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(5);
+						MoveSupportDashLEFT(5);
+						MoveSupportDashLEFT(4);
+						MoveSupportDashLEFT(4);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						L2 = 1;
 					}
 
-					if (L1 == 1) L = 1; L1 = 0;
-					if (L2 == 1) L = 0; L2 = 0;
+					if (L1 == 1) { L = 1; L1 = 0; }
+					else if (L2 == 1) { L = 0; L2 = 0; }
 				}
 			}
 			else if (attackup(Map001_, -24, 0) == 1)
@@ -1434,44 +1063,46 @@ void Move2(void) {
 				{
 					if (R == 0)
 					{
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(6);
-						Move2SupportRIGHT(6);
-						Move2SupportRIGHT(6);
-						Move2SupportRIGHT(6);
-						Move2SupportRIGHT(6);
-						Move2SupportRIGHT(6);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(6);
+						MoveSupportRIGHT(6);
+						MoveSupportRIGHT(6);
+						MoveSupportRIGHT(6);
+						MoveSupportRIGHT(6);
+						MoveSupportRIGHT(6);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						R1 = 1;
 					}
 					else if (R == 1)
 					{
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(8);
-						Move2SupportRIGHT(8);
-						Move2SupportRIGHT(8);
-						Move2SupportRIGHT(8);
-						Move2SupportRIGHT(8);
-						Move2SupportRIGHT(8);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Move2SupportRIGHT(7);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(8);
+						MoveSupportRIGHT(8);
+						MoveSupportRIGHT(8);
+						MoveSupportRIGHT(8);
+						MoveSupportRIGHT(8);
+						MoveSupportRIGHT(8);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MoveSupportRIGHT(7);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						R2 = 1;
 					}
 
@@ -1482,33 +1113,35 @@ void Move2(void) {
 				{
 					if (R == 0)
 					{
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(6);
-						Move2SupportDashRIGHT(6);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(6);
+						MoveSupportDashRIGHT(6);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						R1 = 1;
 					}
-					if (R == 1)
+					else if (R == 1)
 					{
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(8);
-						Move2SupportDashRIGHT(8);
-						Move2SupportDashRIGHT(7);
-						Move2SupportDashRIGHT(7);
-						Map001X = (Map001RightX - 48) / -48;
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(8);
+						MoveSupportDashRIGHT(8);
+						MoveSupportDashRIGHT(7);
+						MoveSupportDashRIGHT(7);
+						MapX = (MapRightX - 48) / -48;
+						CharMainX = (CharMainRightX + 48) / 48;
 						R2 = 1;
 					}
 
-					if (R1 == 1) R = 1; R1 = 0;
-					if (R2 == 1) R = 0; R2 = 0;
+					if (R1 == 1) { R = 1; R1 = 0; }
+					else if (R2 == 1) { R = 0; R2 = 0; }
 				}
 			}
 			else if (attackup(Map001_, 48 + 24, 0) == 1)
