@@ -1,12 +1,11 @@
 //マップ読み込み
-//マップ1
-void MAP001(void) {
-	DrawGraph(MapRightX, MapRightY, Map001Graph, FALSE);
+//マップ描画
+void MAPDraw(int Map) {
+	DrawGraph(MapRightX, MapRightY, MapGraph[Map], FALSE);
 }
-void MAP001Overlay(void) {
-	DrawGraph(MapRightX, MapRightY, Map001OverlayGraph, TRUE);
+void MAPOverlayDraw(int Map) {
+	DrawGraph(MapRightX, MapRightY, MapOverlayGraph[Map], TRUE);
 }
-
 
 //当たり判定処理
 int wall(int place, int x, int y) {
