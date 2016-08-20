@@ -24,6 +24,7 @@ int Start(void) {
 
 	MenuScreen = MakeScreen(48 * 17, 48 * 13, FALSE);
 	MenuScreenGAUSS = MakeScreen(48 * 17, 48 * 13, FALSE);
+	MoveScreen = MakeScreen(48 * 17, 48 * 13, FALSE);
 
 	SelectMenu[MAINMENU] = 18, SelectMenu[ITEMMENU] = 18, SelectMenu[SKILLMENU] = 18, SelectMenu[EQUIPMENU] = 18, SelectMenu[STATUSMENU] = 18;
 }
@@ -52,8 +53,17 @@ void LoadAllGraphs(void) {
 	LoadDivGraph("resource/System/icon.png", 320, 16, 20, 32, 32, IconGraph);
 
 	MapGraph[STARTMAP] = LoadGraph("resource/MAP/001.png");
+	MapGraph2[STARTMAP] = LoadGraph("resource/MAP/001.png");
+	MapGraph3[STARTMAP] = LoadGraph("resource/MAP/001.png");
 	MapOverlayGraph[STARTMAP] = LoadGraph("resource/MAP/001o.png");
 	MapAttack[STARTMAP] = LoadSoftImage("resource/MAP/001_.png");
+	MapWidth[STARTMAP] = 912, MapHeight[STARTMAP] = 720;
+	MapGraph[TOWN1MAP] = LoadGraph("resource/MAP/002-1.png");
+	MapGraph2[TOWN1MAP] = LoadGraph("resource/MAP/002-2.png");
+	MapGraph3[TOWN1MAP] = LoadGraph("resource/MAP/002-3.png");
+	MapOverlayGraph[TOWN1MAP] = LoadGraph("resource/MAP/002o.png");
+	MapAttack[TOWN1MAP] = LoadSoftImage("resource/MAP/002_.png");
+	MapWidth[TOWN1MAP] = 1920, MapHeight[TOWN1MAP] = 1920;
 
 	LoadDivGraph("resource/Character/Main/walk.png", 12, 3, 4, 48, 48, CharDiv);
 }
@@ -67,6 +77,7 @@ void LoadAllSounds(void) {
 	SE[CANCEL] = LoadSoundMem("resource/sounds/SE/common/Cancel2.ogg");
 	SE[BUZZER] = LoadSoundMem("resource/sounds/SE/common/Buzzer1.ogg");
 	SE[EQUIP] = LoadSoundMem("resource/sounds/SE/Equip1.ogg");
+	SE[MOVE] = LoadSoundMem("resource/sounds/SE/Move1.ogg");
 }
 
 //音量設定
@@ -512,6 +523,7 @@ void Option(void) {
 	ConfigSave();
 }
 
+//メニュー
 void Menu(void) {
 	int Gauss = 0;
 	GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MenuScreen);
@@ -570,7 +582,8 @@ void Menu(void) {
 
 		UpdateKey();
 		if (Key[KEY_INPUT_DOWN] == 1) {
-			if (SelectMenu[MAINMENU] == 234) { SelectMenu[MAINMENU] = 270; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			if (SelectMenu[MAINMENU] == 270) { SelectMenu[MAINMENU] = 18; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			else if (SelectMenu[MAINMENU] == 234) { SelectMenu[MAINMENU] = 270; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 			else if (SelectMenu[MAINMENU] == 198) { SelectMenu[MAINMENU] = 234; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 			else if (SelectMenu[MAINMENU] == 162) { SelectMenu[MAINMENU] = 198; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 			else if (SelectMenu[MAINMENU] == 126) { SelectMenu[MAINMENU] = 162; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
@@ -586,6 +599,7 @@ void Menu(void) {
 			else if (SelectMenu[MAINMENU] == 198) { SelectMenu[MAINMENU] = 162; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 			else if (SelectMenu[MAINMENU] == 234) { SelectMenu[MAINMENU] = 198; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 			else if (SelectMenu[MAINMENU] == 270) { SelectMenu[MAINMENU] = 234; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			else if (SelectMenu[MAINMENU] == 18) { SelectMenu[MAINMENU] = 270; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 		}
 		else if (Key[KEY_INPUT_RETURN] == 1 || Key[KEY_INPUT_Z] == 1) {
 			if (SelectMenu[MAINMENU] == 18) {
@@ -1601,12 +1615,14 @@ void Title(void) {
 
 		UpdateKey();
 		if (Key[KEY_INPUT_DOWN] == 1) {
-			if (SelectY == 434) { SelectY = 469; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			if (SelectY == 469) { SelectY = 400; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+			else if (SelectY == 434) { SelectY = 469; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 			else if (SelectY == 400) { SelectY = 434; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 		}
 		else if (Key[KEY_INPUT_UP] == 1) {
-			if (SelectY == 434) { SelectY = 400; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
-			else if (SelectY == 469) { SelectY = 434; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+		if (SelectY == 400) { SelectY = 469; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+		else if (SelectY == 434) { SelectY = 400; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
+		else if (SelectY == 469) { SelectY = 434; PlaySoundMem(SE[SELECT], DX_PLAYTYPE_BACK); }
 		}
 		else if (Key[KEY_INPUT_RETURN] == 1 || Key[KEY_INPUT_Z] == 1) {
 			if (SelectY == 400) {
@@ -1677,7 +1693,6 @@ void Title(void) {
 //キャラ描画関数
 void CharMain(int i) {
 	DrawGraph(CharMainRightX, CharMainRightY - 6, CharDiv[i], TRUE);
-	//MAP001Overlay();
 }
 
 //関数Move用変数
@@ -1697,16 +1712,20 @@ void MoveSupportUP(int i)
 			CharMainRightY = CharMainRightY - 3;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(15);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 void MoveSupportDOWN(int i)
 	{
 		MapRightY = MapRightY - 3;
-		if (MapRightY < -720 + (48 * 13)) {
-			MapRightY = -720 + (48 * 13);
+		if (MapRightY < (MapHeight[MapNumber] * -1) + (48 * 13)) {
+			MapRightY = (MapHeight[MapNumber] * -1) + (48 * 13);
 			CharMainRightY = CharMainRightY + 3;
 		}
 		else if (CharMainRightY < 288) {
@@ -1714,10 +1733,14 @@ void MoveSupportDOWN(int i)
 			CharMainRightY = CharMainRightY + 3;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(15);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 void MoveSupportLEFT(int i)
 	{
@@ -1731,16 +1754,20 @@ void MoveSupportLEFT(int i)
 			CharMainRightX = CharMainRightX - 3;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(15);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 void MoveSupportRIGHT(int i)
 	{
 		MapRightX = MapRightX - 3;
-		if (MapRightX < -912 + (48 * 17)) {
-			MapRightX = -912 + (48 * 17);
+		if (MapRightX < (MapWidth[MapNumber] * -1) + (48 * 17)) {
+			MapRightX = (MapWidth[MapNumber] * -1) + (48 * 17);
 			CharMainRightX = CharMainRightX + 3;
 		}
 		else if (CharMainRightX < 384) {
@@ -1748,10 +1775,14 @@ void MoveSupportRIGHT(int i)
 			CharMainRightX = CharMainRightX + 3;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(15);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 
 void MoveSupportDashUP(int i)
@@ -1766,16 +1797,20 @@ void MoveSupportDashUP(int i)
 			CharMainRightY = CharMainRightY - 6;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(5);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 void MoveSupportDashDOWN(int i)
 	{
 		MapRightY = MapRightY - 6;
-		if (MapRightY < -720 + (48 * 13)) {
-			MapRightY = -720 + (48 * 13);
+		if (MapRightY < (MapHeight[MapNumber] * -1) + (48 * 13)) {
+			MapRightY = (MapHeight[MapNumber] * -1) + (48 * 13);
 			CharMainRightY = CharMainRightY + 6;
 		}
 		else if (CharMainRightY < 288) {
@@ -1783,10 +1818,14 @@ void MoveSupportDashDOWN(int i)
 			CharMainRightY = CharMainRightY + 6;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(5);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 void MoveSupportDashLEFT(int i)
 	{
@@ -1800,16 +1839,20 @@ void MoveSupportDashLEFT(int i)
 			CharMainRightX = CharMainRightX - 6;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(5);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 void MoveSupportDashRIGHT(int i)
 	{
 		MapRightX = MapRightX - 6;
-		if (MapRightX < -912 + (48 * 17)) {
-			MapRightX = -912 + (48 * 17);
+		if (MapRightX < (MapWidth[MapNumber] * -1) + (48 * 17)) {
+			MapRightX = (MapWidth[MapNumber] * -1) + (48 * 17);
 			CharMainRightX = CharMainRightX + 6;
 		}
 		else if (CharMainRightX < 384) {
@@ -1817,17 +1860,21 @@ void MoveSupportDashRIGHT(int i)
 			CharMainRightX = CharMainRightX + 6;
 		}
 		ClearDrawScreen();
-		MAPDraw(STARTMAP);
+		MAPDraw(MapNumber, MapRoop);
 		CharMain(i);
+		MAPOverlayDraw(MapNumber);
 		ScreenFlip();
 		WaitTimer(5);
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
 	}
 
 //マップ移動関数
 void Move(void) {
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
 		{
-			if (attackup(MapAttack[STARTMAP], 0, -24) != 1)
+			if (attackup(MapAttack[MapNumber], 24, -24) != 1)
 			{
 				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
 				{
@@ -1906,17 +1953,22 @@ void Move(void) {
 					else if (U2 == 1) { U = 0; U2 = 0; }
 				}
 			}
-			if (attackup(MapAttack[STARTMAP], 0, -24) == 1)
+			if (attackup(MapAttack[MapNumber], 24, -24) == 1)
 			{
-				MAPDraw(STARTMAP);
+				MAPDraw(MapNumber, MapRoop);
 				CharMain(10);
+				MAPOverlayDraw(MapNumber);
 				ScreenFlip();
+				WaitTimer(1);
+				RoopCount = RoopCount + 20;
+				if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+				if (MapRoop == 5) MapRoop = 1;
 			}
 			Direction = FACEUP;
 		}
 	else if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 		{
-			if (attackup(MapAttack[STARTMAP], 0, 48 + 24) != 1)
+			if (attackdown(MapAttack[MapNumber], 24, 48 + 24) != 1)
 			{
 				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
 				{
@@ -1995,17 +2047,22 @@ void Move(void) {
 					else if (D2 == 1) { D = 0; D2 = 0; }
 				}
 			}
-			else if (attackup(MapAttack[STARTMAP], 0, 48 + 24) == 1)
+			else if (attackdown(MapAttack[MapNumber], 24, 48 + 24) == 1)
 			{
-				MAPDraw(STARTMAP);
+				MAPDraw(MapNumber, MapRoop);
 				CharMain(1);
+				MAPOverlayDraw(MapNumber);
 				ScreenFlip();
+				WaitTimer(1);
+				RoopCount = RoopCount + 20;
+				if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+				if (MapRoop == 5) MapRoop = 1;
 			}
 			Direction = FACEDOWN;
 		}
 	else if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 		{
-			if (attackup(MapAttack[STARTMAP], -24, 0) != 1)
+			if (attackleft(MapAttack[MapNumber], -24, 24) != 1)
 			{
 				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
 				{
@@ -2084,17 +2141,22 @@ void Move(void) {
 					else if (L2 == 1) { L = 0; L2 = 0; }
 				}
 			}
-			else if (attackup(MapAttack[STARTMAP], -24, 0) == 1)
+			else if (attackleft(MapAttack[MapNumber], -24, 24) == 1)
 			{
-				MAPDraw(STARTMAP);
+				MAPDraw(MapNumber, MapRoop);
 				CharMain(4);
+				MAPOverlayDraw(MapNumber);
 				ScreenFlip();
+				WaitTimer(1);
+				RoopCount = RoopCount + 20;
+				if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+				if (MapRoop == 5) MapRoop = 1;
 			}
 			Direction = FACELEFT;
 		}
 	else if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
 		{
-			if (attackup(MapAttack[STARTMAP], 48 + 24, 0) != 1)
+			if (attackright(MapAttack[MapNumber], 48 + 24, 24) != 1)
 			{
 				if (CheckHitKey(KEY_INPUT_LCONTROL) == 0 && Dash == FALSE)
 				{
@@ -2173,16 +2235,95 @@ void Move(void) {
 					else if (R2 == 1) { R = 0; R2 = 0; }
 				}
 			}
-			else if (attackup(MapAttack[STARTMAP], 48 + 24, 0) == 1)
+			else if (attackright(MapAttack[MapNumber], 48 + 24, 24) == 1)
 			{
-				MAPDraw(STARTMAP);
+				MAPDraw(MapNumber, MapRoop);
 				CharMain(7);
+				MAPOverlayDraw(MapNumber);
 				ScreenFlip();
+				WaitTimer(1);
+				RoopCount = RoopCount + 20;
+				if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+				if (MapRoop == 5) MapRoop = 1;
 			}
 			Direction = FACERIGHT;
 		}
+	else if (CheckHitKey(KEY_INPUT_UP) == 0 && CheckHitKey(KEY_INPUT_DOWN) == 0 && CheckHitKey(KEY_INPUT_LEFT) == 0 && CheckHitKey(KEY_INPUT_RIGHT) == 0) {
+		MAPDraw(MapNumber, MapRoop);
+		if (Direction == FACEUP) CharMain(10);
+		else if (Direction == FACEDOWN) CharMain(1);
+		else if (Direction == FACELEFT) CharMain(4);
+		else if (Direction == FACERIGHT) CharMain(7);
+		MAPOverlayDraw(MapNumber);
+		ScreenFlip();
+		RoopCount = RoopCount + 20;
+		if (RoopCount > 500) { RoopCount = 0; MapRoop++; }
+		if (MapRoop == 5) MapRoop = 1;
+	}
 	MapX = (MapRightX - 48) / -48;
 	MapY = (MapRightY - 48) / -48;
 	CharMainX = (CharMainRightX + 48) / 48;
 	CharMainY = (CharMainRightY + 48) / 48;
+	}
+
+	//マップ移動処理
+	void MAPMove(void) {
+		if (MapNumber == 0) {
+			if (MapX == 2 && MapY == 3) {
+				if (CharMainX == 9 && CharMainY == 13 && Direction == FACEDOWN) {
+					MapNumber = 1; MapX = 1; MapY = 5; CharMainX = 6; CharMainY = 7;
+					MapRightX = MapX * -48 + 48;
+					MapRightY = MapY * -48 + 48;
+					CharMainRightX = CharMainX * 48 - 48;
+					CharMainRightY = CharMainY * 48 - 48;
+
+					PlaySoundMem(SE[MOVE], DX_PLAYTYPE_BACK);
+					GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MoveScreen);
+					int Bright = 255;
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						DrawGraph(0, 0, MoveScreen, FALSE);
+						ScreenFlip();
+						Bright = Bright - 10;
+					} while (Bright >= 0);
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						MAPDraw(MapNumber, MapRoop);
+						CharMain(1);
+						ScreenFlip();
+						Bright = Bright + 10;
+					} while (Bright <= 255);
+					SetDrawBright(255, 255, 255);
+				}
+			}
+		}
+		else if (MapNumber == 1) {
+			if (MapX == 1 && MapY == 4) {
+				if (CharMainX == 6 && CharMainY == 7 && Direction == FACEUP) {
+					MapNumber = 0; MapX = 2; MapY = 3; CharMainX = 9; CharMainY = 12;
+					MapRightX = MapX * -48 + 48;
+					MapRightY = MapY * -48 + 48;
+					CharMainRightX = CharMainX * 48 - 48;
+					CharMainRightY = CharMainY * 48 - 48;
+
+					PlaySoundMem(SE[MOVE], DX_PLAYTYPE_BACK);
+					GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MoveScreen);
+					int Bright = 255;
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						DrawGraph(0, 0, MoveScreen, FALSE);
+						ScreenFlip();
+						Bright = Bright - 10;
+					} while (Bright >= 0);
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						MAPDraw(MapNumber, MapRoop);
+						CharMain(10);
+						ScreenFlip();
+						Bright = Bright + 10;
+					} while (Bright <= 255);
+					SetDrawBright(255, 255, 255);
+				}
+			}
+		}
 	}

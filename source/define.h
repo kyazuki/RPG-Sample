@@ -10,6 +10,7 @@
 #define CANCEL 2
 #define BUZZER 3
 #define EQUIP 4
+#define MOVE 5
 
 //画像
 //顔グラフィック
@@ -18,6 +19,7 @@
 #define CHARMAIN 0
 //マップ
 #define STARTMAP 0
+#define TOWN1MAP 1
 
 //キャラ向き
 #define FACEUP 0
