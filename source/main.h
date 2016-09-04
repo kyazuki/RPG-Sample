@@ -16,6 +16,8 @@ int Start(void) {
 	White = GetColor(255, 255, 255);
 	Gray = GetColor(166, 161, 158);
 	Blue = GetColor(128, 165, 247);
+	Yellow = GetColor(255, 255, 64);
+	Red = GetColor(255, 32, 32);
 	if (FontTitle == -1 || FontMain == -1) {
 		RemoveFontResourceEx("resource/font/mplus-1m-medium.ttf", FR_PRIVATE, NULL);
 		DxLib_End();
@@ -25,6 +27,7 @@ int Start(void) {
 	MenuScreen = MakeScreen(48 * 17, 48 * 13, FALSE);
 	MenuScreenGAUSS = MakeScreen(48 * 17, 48 * 13, FALSE);
 	MoveScreen = MakeScreen(48 * 17, 48 * 13, FALSE);
+	MsgScreen = MakeScreen(48 * 17, 48 * 13, FALSE);
 
 	SelectMenu[MAINMENU] = 18, SelectMenu[ITEMMENU] = 18, SelectMenu[SKILLMENU] = 18, SelectMenu[EQUIPMENU] = 18, SelectMenu[STATUSMENU] = 18;
 }
@@ -48,24 +51,43 @@ void LoadAllGraphs(void) {
 	MsgGraph = LoadGraph("resource/System/window/msg.png");
 
 	SelectGraph = LoadGraph("resource/System/select.png");
+	BarBaseGraph = LoadGraph("resource/System/BarBase.png");
+	HPBarGraph = LoadGraph("resource/System/HP.png");
+	MPBarGraph = LoadGraph("resource/System/MP.png");
 
-	LoadDivGraph("resource/faces/main.png", 8, 4, 2, 144, 144, FaceGraph);
+	LoadDivGraph("resource/faces/1.png", 8, 4, 2, 144, 144, FaceGraph);
 	LoadDivGraph("resource/System/icon.png", 320, 16, 20, 32, 32, IconGraph);
+	LoadDivGraph("resource/System/cursor.png", 4, 2, 2, 24, 24, CursorGraph);
 
-	MapGraph[STARTMAP] = LoadGraph("resource/MAP/001.png");
-	MapGraph2[STARTMAP] = LoadGraph("resource/MAP/001.png");
-	MapGraph3[STARTMAP] = LoadGraph("resource/MAP/001.png");
-	MapOverlayGraph[STARTMAP] = LoadGraph("resource/MAP/001o.png");
-	MapAttack[STARTMAP] = LoadSoftImage("resource/MAP/001_.png");
+	MapGraph[STARTMAP] = LoadGraph("resource/MAP/START/001-1.png");
+	MapGraph2[STARTMAP] = LoadGraph("resource/MAP/START/001-2.png");
+	MapGraph3[STARTMAP] = LoadGraph("resource/MAP/START/001-3.png");
+	MapOverlayGraph[STARTMAP] = LoadGraph("resource/MAP/START/001o.png");
+	MapEVGraphDOWN[STARTMAPEV1] = LoadGraph("resource/MAP/START/EV/ev1d.png");
+	MapEVGraphLEFT[STARTMAPEV1] = LoadGraph("resource/MAP/START/EV/ev1l.png");
+	MapEVGraphRIGHT[STARTMAPEV1] = LoadGraph("resource/MAP/START/EV/ev1r.png");
+	MapAttack[STARTMAP] = LoadSoftImage("resource/MAP/START/001_.png");
 	MapWidth[STARTMAP] = 912, MapHeight[STARTMAP] = 720;
-	MapGraph[TOWN1MAP] = LoadGraph("resource/MAP/002-1.png");
-	MapGraph2[TOWN1MAP] = LoadGraph("resource/MAP/002-2.png");
-	MapGraph3[TOWN1MAP] = LoadGraph("resource/MAP/002-3.png");
-	MapOverlayGraph[TOWN1MAP] = LoadGraph("resource/MAP/002o.png");
-	MapAttack[TOWN1MAP] = LoadSoftImage("resource/MAP/002_.png");
+	MapGraph[TOWN1MAP] = LoadGraph("resource/MAP/TOWN1/001-1.png");
+	MapGraph2[TOWN1MAP] = LoadGraph("resource/MAP/TOWN1/001-2.png");
+	MapGraph3[TOWN1MAP] = LoadGraph("resource/MAP/TOWN1/001-3.png");
+	MapOverlayGraph[TOWN1MAP] = LoadGraph("resource/MAP/TOWN1/001o.png");
+	MapAttack[TOWN1MAP] = LoadSoftImage("resource/MAP/TOWN1/001_.png");
 	MapWidth[TOWN1MAP] = 1920, MapHeight[TOWN1MAP] = 1920;
+	MapGraph[TOWN1INN1FMAP] = LoadGraph("resource/MAP/TOWN1INN/001-1.png");
+	MapGraph2[TOWN1INN1FMAP] = LoadGraph("resource/MAP/TOWN1INN/001-2.png");
+	MapGraph3[TOWN1INN1FMAP] = LoadGraph("resource/MAP/TOWN1INN/001-3.png");
+	MapOverlayGraph[TOWN1INN1FMAP] = LoadGraph("resource/MAP/TOWN1INN/001o.png");
+	MapAttack[TOWN1INN1FMAP] = LoadSoftImage("resource/MAP/TOWN1INN/001_.png");
+	MapWidth[TOWN1INN1FMAP] = 1008, MapHeight[TOWN1INN1FMAP] = 960;
+	MapGraph[TOWN1INN2FMAP] = LoadGraph("resource/MAP/TOWN1INN/002-1.png");
+	MapGraph2[TOWN1INN2FMAP] = LoadGraph("resource/MAP/TOWN1INN/002-2.png");
+	MapGraph3[TOWN1INN2FMAP] = LoadGraph("resource/MAP/TOWN1INN/002-3.png");
+	MapOverlayGraph[TOWN1INN2FMAP] = LoadGraph("resource/MAP/TOWN1INN/002o.png");
+	MapAttack[TOWN1INN2FMAP] = LoadSoftImage("resource/MAP/TOWN1INN/002_.png");
+	MapWidth[TOWN1INN2FMAP] = 816, MapHeight[TOWN1INN2FMAP] = 720;
 
-	LoadDivGraph("resource/Character/Main/walk.png", 12, 3, 4, 48, 48, CharDiv);
+	LoadDivGraph("resource/Character/walk.png", 12, 3, 4, 48, 48, CharDiv);
 }
 
 //音
@@ -78,6 +100,8 @@ void LoadAllSounds(void) {
 	SE[BUZZER] = LoadSoundMem("resource/sounds/SE/common/Buzzer1.ogg");
 	SE[EQUIP] = LoadSoundMem("resource/sounds/SE/Equip1.ogg");
 	SE[MOVE] = LoadSoundMem("resource/sounds/SE/Move1.ogg");
+	SE[SAVE] = LoadSoundMem("resource/sounds/SE/Save.ogg");
+	SE[LOAD] = LoadSoundMem("resource/sounds/SE/Load.ogg");
 }
 
 //音量設定
@@ -133,7 +157,7 @@ void SettingsSEs(int SEVo) {
 }
 
 //キーの押下フレーム数取得関数
-int UpdateKey() {
+int UpdateKey(void) {
 	char tmpKey[256];
 	GetHitKeyStateAll(tmpKey);
 	for (int i = 0; i<256; i++) {
@@ -565,17 +589,35 @@ void Menu(void) {
 		else if (Cheat == TRUE) DrawStringToHandle(24, 239, "チート", White, FontMain);
 		DrawStringToHandle(24, 275, "ゲーム終了", White, FontMain);
 
+		HPBar = (float)StatusMainChar[HP] / StatusMainChar[HPMAX] * 186;
+		MPBar = (float)StatusMainChar[MP] / StatusMainChar[MPMAX] * 186;
+		HPBarWidth = HPBar;
+		MPBarWidth = MPBar;
+
 		DrawGraph(259, 19, FaceGraph[FACEMAIN], TRUE);
-		DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+		if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+		else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(419, 42, Yellow, FontMain, "%s", Name.c_str());
+		else if (HPBarWidth == 0) { DrawFormatStringToHandle(419, 42, Red, FontMain, "%s", Name.c_str()); DrawGraph(420, 112, IconGraph[1], TRUE); }
 		DrawStringToHandle(419, 78, "Lv", Blue, FontMain);
 		DrawFormatStringToHandle(508, 78, White, FontMain, "%3d", StatusMainChar[LV]);
 		DrawStringToHandle(599, 42, "勇者", White, FontMain);
+		DrawGraph(600, 101, BarBaseGraph, TRUE);
+		DrawGraph(600, 137, BarBaseGraph, TRUE);
+		DrawRectGraph(600, 101, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+		DrawRectGraph(600, 137, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 		DrawStringToHandle(599, 78, "HP", Blue, FontMain);
 		DrawStringToHandle(599, 114, "MP", Blue, FontMain);
-		DrawFormatStringToHandle(660, 78, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-		DrawFormatStringToHandle(660, 114, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+		if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(652, 78, White, FontMain, "%4d", StatusMainChar[HP]);
+		else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(652, 78, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+		else if (HPBarWidth == 0) DrawFormatStringToHandle(652, 78, Red, FontMain, "%4d", StatusMainChar[HP]);
+		if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(652, 114, White, FontMain, "%4d", StatusMainChar[MP]);
+		else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(652, 114, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+		else if (MPBarWidth == 0) DrawFormatStringToHandle(652, 114, Red, FontMain, "%4d", StatusMainChar[MP]);
+		DrawFormatStringToHandle(652, 78, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+		DrawFormatStringToHandle(652, 114, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 
-		DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+		if (Money >= 0) DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+		else if (Money < 0) DrawFormatStringToHandle(30, 574, Red, FontMain, "%10ld", Money);
 		DrawStringToHandle(190, 574, "G", Blue, FontMain);
 
 		ScreenFlip();
@@ -808,17 +850,35 @@ void Menu(void) {
 					else if (Cheat == TRUE) DrawStringToHandle(24, 239, "チート", White, FontMain);
 					DrawStringToHandle(24, 275, "ゲーム終了", White, FontMain);
 
+					HPBar = (float)StatusMainChar[HP] / StatusMainChar[HPMAX] * 186;
+					MPBar = (float)StatusMainChar[MP] / StatusMainChar[MPMAX] * 186;
+					HPBarWidth = HPBar;
+					MPBarWidth = MPBar;
+
 					DrawGraph(259, 19, FaceGraph[FACEMAIN], TRUE);
-					DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+					if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+					else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(419, 42, Yellow, FontMain, "%s", Name.c_str());
+					else if (HPBarWidth == 0) { DrawFormatStringToHandle(419, 42, Red, FontMain, "%s", Name.c_str()); DrawGraph(420, 112, IconGraph[1], TRUE); }
 					DrawStringToHandle(419, 78, "Lv", Blue, FontMain);
 					DrawFormatStringToHandle(508, 78, White, FontMain, "%3d", StatusMainChar[LV]);
 					DrawStringToHandle(599, 42, "勇者", White, FontMain);
+					DrawGraph(600, 101, BarBaseGraph, TRUE);
+					DrawGraph(600, 137, BarBaseGraph, TRUE);
+					DrawRectGraph(600, 101, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+					DrawRectGraph(600, 137, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 					DrawStringToHandle(599, 78, "HP", Blue, FontMain);
 					DrawStringToHandle(599, 114, "MP", Blue, FontMain);
-					DrawFormatStringToHandle(660, 78, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-					DrawFormatStringToHandle(660, 114, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+					if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(652, 78, White, FontMain, "%4d", StatusMainChar[HP]);
+					else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(652, 78, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+					else if (HPBarWidth == 0) DrawFormatStringToHandle(652, 78, Red, FontMain, "%4d", StatusMainChar[HP]);
+					if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(652, 114, White, FontMain, "%4d", StatusMainChar[MP]);
+					else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(652, 114, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+					else if (MPBarWidth == 0) DrawFormatStringToHandle(652, 114, Red, FontMain, "%4d", StatusMainChar[MP]);
+					DrawFormatStringToHandle(652, 78, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+					DrawFormatStringToHandle(652, 114, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 
-					DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+					if (Money >= 0) DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+					else if (Money < 0) DrawFormatStringToHandle(30, 574, Red, FontMain, "%10ld", Money);
 					DrawStringToHandle(190, 574, "G", Blue, FontMain);
 
 					ScreenFlip();
@@ -844,15 +904,32 @@ void Menu(void) {
 								SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 								DrawStringToHandle(25, 130, "魔法", White, FontMain);
 
+								HPBar = (float)StatusMainChar[HP] / StatusMainChar[HPMAX] * 186;
+								MPBar = (float)StatusMainChar[MP] / StatusMainChar[MPMAX] * 186;
+								HPBarWidth = HPBar;
+								MPBarWidth = MPBar;
+
 								DrawGraph(258, 126, FaceGraph[FACEMAIN], TRUE);
-								DrawFormatStringToHandle(418, 149, White, FontMain, "%s", Name.c_str());
+								if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(418, 149, White, FontMain, "%s", Name.c_str());
+								else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(418, 149, Yellow, FontMain, "%s", Name.c_str());
+								else if (HPBarWidth == 0) { DrawFormatStringToHandle(418, 149, Red, FontMain, "%s", Name.c_str()); DrawGraph(420, 218, IconGraph[1], TRUE); }		
 								DrawStringToHandle(418, 185, "Lv", Blue, FontMain);
 								DrawFormatStringToHandle(507, 185, White, FontMain, "%3d", StatusMainChar[LV]);
 								DrawStringToHandle(598, 149, "勇者", White, FontMain);
+								DrawGraph(599, 208, BarBaseGraph, TRUE);
+								DrawGraph(599, 244, BarBaseGraph, TRUE);
+								DrawRectGraph(599, 208, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+								DrawRectGraph(599, 244, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 								DrawStringToHandle(598, 185, "HP", Blue, FontMain);
 								DrawStringToHandle(598, 221, "MP", Blue, FontMain);
-								DrawFormatStringToHandle(659, 185, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-								DrawFormatStringToHandle(659, 221, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+								if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(651, 185, White, FontMain, "%4d", StatusMainChar[HP]);
+								else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(651, 185, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+								else if (HPBarWidth == 0) DrawFormatStringToHandle(651, 185, Red, FontMain, "%4d", StatusMainChar[HP]);
+								if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(651, 221, White, FontMain, "%4d", StatusMainChar[MP]);
+								else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(651, 221, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+								else if (MPBarWidth == 0) DrawFormatStringToHandle(651, 221, Red, FontMain, "%4d", StatusMainChar[MP]);
+								DrawFormatStringToHandle(651, 185, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+								DrawFormatStringToHandle(651, 221, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 
 								ScreenFlip();
 
@@ -878,15 +955,32 @@ void Menu(void) {
 											SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 											DrawStringToHandle(25, 130, "魔法", White, FontMain);
 
+											HPBar = (float)StatusMainChar[HP] / StatusMainChar[HPMAX] * 186;
+											MPBar = (float)StatusMainChar[MP] / StatusMainChar[MPMAX] * 186;
+											HPBarWidth = HPBar;
+											MPBarWidth = MPBar;
+
 											DrawGraph(258, 126, FaceGraph[FACEMAIN], TRUE);
-											DrawFormatStringToHandle(418, 149, White, FontMain, "%s", Name.c_str());
+											if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(418, 149, White, FontMain, "%s", Name.c_str());
+											else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(418, 149, Yellow, FontMain, "%s", Name.c_str());
+											else if (HPBarWidth == 0) { DrawFormatStringToHandle(418, 149, Red, FontMain, "%s", Name.c_str()); DrawGraph(420, 218, IconGraph[1], TRUE); }
 											DrawStringToHandle(418, 185, "Lv", Blue, FontMain);
 											DrawFormatStringToHandle(507, 185, White, FontMain, "%3d", StatusMainChar[LV]);
 											DrawStringToHandle(598, 149, "勇者", White, FontMain);
+											DrawGraph(599, 208, BarBaseGraph, TRUE);
+											DrawGraph(599, 244, BarBaseGraph, TRUE);
+											DrawRectGraph(599, 208, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+											DrawRectGraph(599, 244, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 											DrawStringToHandle(598, 185, "HP", Blue, FontMain);
 											DrawStringToHandle(598, 221, "MP", Blue, FontMain);
-											DrawFormatStringToHandle(659, 185, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-											DrawFormatStringToHandle(659, 221, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+											if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(651, 185, White, FontMain, "%4d", StatusMainChar[HP]);
+											else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(651, 185, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+											else if (HPBarWidth == 0) DrawFormatStringToHandle(651, 185, Red, FontMain, "%4d", StatusMainChar[HP]);
+											if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(651, 221, White, FontMain, "%4d", StatusMainChar[MP]);
+											else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(651, 221, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+											else if (MPBarWidth == 0) DrawFormatStringToHandle(651, 221, Red, FontMain, "%4d", StatusMainChar[MP]);
+											DrawFormatStringToHandle(651, 185, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+											DrawFormatStringToHandle(651, 221, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 
 											ScreenFlip();
 
@@ -945,17 +1039,35 @@ void Menu(void) {
 					else if (Cheat == TRUE) DrawStringToHandle(24, 239, "チート", White, FontMain);
 					DrawStringToHandle(24, 275, "ゲーム終了", White, FontMain);
 
+					HPBar = (float)StatusMainChar[HP] / StatusMainChar[HPMAX] * 186;
+					MPBar = (float)StatusMainChar[MP] / StatusMainChar[MPMAX] * 186;
+					HPBarWidth = HPBar;
+					MPBarWidth = MPBar;
+
 					DrawGraph(259, 19, FaceGraph[FACEMAIN], TRUE);
-					DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+					if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+					else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(419, 42, Yellow, FontMain, "%s", Name.c_str());
+					else if (HPBarWidth == 0) { DrawFormatStringToHandle(419, 42, Red, FontMain, "%s", Name.c_str()); DrawGraph(420, 112, IconGraph[1], TRUE); }
 					DrawStringToHandle(419, 78, "Lv", Blue, FontMain);
 					DrawFormatStringToHandle(508, 78, White, FontMain, "%3d", StatusMainChar[LV]);
 					DrawStringToHandle(599, 42, "勇者", White, FontMain);
+					DrawGraph(600, 101, BarBaseGraph, TRUE);
+					DrawGraph(600, 137, BarBaseGraph, TRUE);
+					DrawRectGraph(600, 101, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+					DrawRectGraph(600, 137, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 					DrawStringToHandle(599, 78, "HP", Blue, FontMain);
 					DrawStringToHandle(599, 114, "MP", Blue, FontMain);
-					DrawFormatStringToHandle(660, 78, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-					DrawFormatStringToHandle(660, 114, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+					if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(652, 78, White, FontMain, "%4d", StatusMainChar[HP]);
+					else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(652, 78, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+					else if (HPBarWidth == 0) DrawFormatStringToHandle(652, 78, Red, FontMain, "%4d", StatusMainChar[HP]);
+					if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(652, 114, White, FontMain, "%4d", StatusMainChar[MP]);
+					else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(652, 114, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+					else if (MPBarWidth == 0) DrawFormatStringToHandle(652, 114, Red, FontMain, "%4d", StatusMainChar[MP]);
+					DrawFormatStringToHandle(652, 78, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+					DrawFormatStringToHandle(652, 114, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 
-					DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+					if (Money >= 0) DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+					else if (Money < 0) DrawFormatStringToHandle(30, 574, Red, FontMain, "%10ld", Money);
 					DrawStringToHandle(190, 574, "G", Blue, FontMain);
 
 					ScreenFlip();
@@ -983,7 +1095,9 @@ void Menu(void) {
 								DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 								DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-								DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+								if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+								else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+								else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());
 								DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 								DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 								DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1047,7 +1161,9 @@ void Menu(void) {
 											DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 											DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-											DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+											if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+											else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+											else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());											
 											DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 											DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 											DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1116,7 +1232,9 @@ void Menu(void) {
 														DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 														DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-														DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());
 														DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1179,7 +1297,9 @@ void Menu(void) {
 														DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 														DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-														DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());
 														DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1242,7 +1362,9 @@ void Menu(void) {
 														DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 														DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-														DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());
 														DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1305,7 +1427,9 @@ void Menu(void) {
 														DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 														DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-														DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());
 														DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1368,7 +1492,9 @@ void Menu(void) {
 														DrawStringToHandle(510, 130, "最強装備", White, FontMain);
 														DrawStringToHandle(667, 130, "全て外す", White, FontMain);
 
-														DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(26, 131, White, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(26, 131, Yellow, FontMain, "%s", Name.c_str());
+														else if (HPBarWidth == 0) DrawFormatStringToHandle(26, 131, Red, FontMain, "%s", Name.c_str());
 														DrawStringToHandle(26, 167, "攻撃力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 203, "防御力　　　 →", Blue, FontMain);
 														DrawStringToHandle(26, 239, "魔法攻撃　　 →", Blue, FontMain);
@@ -1466,17 +1592,35 @@ void Menu(void) {
 					else if (Cheat == TRUE) DrawStringToHandle(24, 239, "チート", White, FontMain);
 					DrawStringToHandle(24, 275, "ゲーム終了", White, FontMain);
 
+					HPBar = (float)StatusMainChar[HP] / StatusMainChar[HPMAX] * 186;
+					MPBar = (float)StatusMainChar[MP] / StatusMainChar[MPMAX] * 186;
+					HPBarWidth = HPBar;
+					MPBarWidth = MPBar;
+
 					DrawGraph(259, 19, FaceGraph[FACEMAIN], TRUE);
-					DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+					if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(419, 42, White, FontMain, "%s", Name.c_str());
+					else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(419, 42, Yellow, FontMain, "%s", Name.c_str());
+					else if (HPBarWidth == 0) { DrawFormatStringToHandle(419, 42, Red, FontMain, "%s", Name.c_str()); DrawGraph(420, 112, IconGraph[1], TRUE); }
 					DrawStringToHandle(419, 78, "Lv", Blue, FontMain);
 					DrawFormatStringToHandle(508, 78, White, FontMain, "%3d", StatusMainChar[LV]);
 					DrawStringToHandle(599, 42, "勇者", White, FontMain);
+					DrawGraph(600, 101, BarBaseGraph, TRUE);
+					DrawGraph(600, 137, BarBaseGraph, TRUE);
+					DrawRectGraph(600, 101, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+					DrawRectGraph(600, 137, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 					DrawStringToHandle(599, 78, "HP", Blue, FontMain);
 					DrawStringToHandle(599, 114, "MP", Blue, FontMain);
-					DrawFormatStringToHandle(660, 78, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-					DrawFormatStringToHandle(660, 114, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+					if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(652, 78, White, FontMain, "%4d", StatusMainChar[HP]);
+					else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(652, 78, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+					else if (HPBarWidth == 0) DrawFormatStringToHandle(652, 78, Red, FontMain, "%4d", StatusMainChar[HP]);
+					if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(652, 114, White, FontMain, "%4d", StatusMainChar[MP]);
+					else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(652, 114, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+					else if (MPBarWidth == 0) DrawFormatStringToHandle(652, 114, Red, FontMain, "%4d", StatusMainChar[MP]);
+					DrawFormatStringToHandle(652, 78, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+					DrawFormatStringToHandle(652, 114, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 
-					DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+					if (Money >= 0) DrawFormatStringToHandle(30, 574, White, FontMain, "%10ld", Money);
+					else if (Money < 0) DrawFormatStringToHandle(30, 574, Red, FontMain, "%10ld", Money);
 					DrawStringToHandle(190, 574, "G", Blue, FontMain);
 
 					ScreenFlip();
@@ -1489,16 +1633,28 @@ void Menu(void) {
 								DrawGraph(0, 0, MenuScreenGAUSS, FALSE);
 								DrawGraph(0, 0, MenuGraph[STATUSMENU], TRUE);
 
-								DrawFormatStringToHandle(23, 23, White, FontMain, "%s", Name.c_str());
+								if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(23, 23, White, FontMain, "%s", Name.c_str());
+								else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(23, 23, Yellow, FontMain, "%s", Name.c_str());
+								else if (HPBarWidth == 0) { DrawFormatStringToHandle(23, 23, Red, FontMain, "%s", Name.c_str()); DrawGraph(497, 211, IconGraph[1], TRUE); }								
 								DrawStringToHandle(209, 23, "勇者", White, FontMain);
 
 								DrawGraph(30, 90, FaceGraph[FACEMAIN], TRUE);
 								DrawStringToHandle(222, 95, "Lv", Blue, FontMain);
 								DrawFormatStringToHandle(311, 95, White, FontMain, "%3d", StatusMainChar[LV]);
+								DrawGraph(223, 189, BarBaseGraph, TRUE);
+								DrawGraph(223, 225, BarBaseGraph, TRUE);
+								DrawRectGraph(223, 189, 0, 0, HPBarWidth, 7, HPBarGraph, TRUE, FALSE);
+								DrawRectGraph(223, 225, 0, 0, MPBarWidth, 7, MPBarGraph, TRUE, FALSE);
 								DrawStringToHandle(222, 166, "HP", Blue, FontMain);
 								DrawStringToHandle(222, 202, "MP", Blue, FontMain);
-								DrawFormatStringToHandle(283, 166, White, FontMain, "%4d/%4d", StatusMainChar[HP], StatusMainChar[HPMAX]);
-								DrawFormatStringToHandle(283, 202, White, FontMain, "%4d/%4d", StatusMainChar[MP], StatusMainChar[MPMAX]);
+								if (HPBarWidth <= 186 && HPBarWidth > 56) DrawFormatStringToHandle(275, 166, White, FontMain, "%4d", StatusMainChar[HP]);
+								else if (HPBarWidth <= 56 && HPBarWidth > 0) DrawFormatStringToHandle(275, 166, Yellow, FontMain, "%4d", StatusMainChar[HP]);
+								else if (HPBarWidth == 0) DrawFormatStringToHandle(275, 166, Red, FontMain, "%4d", StatusMainChar[HP]);
+								if (MPBarWidth <= 186 && MPBarWidth > 56) DrawFormatStringToHandle(275, 202, White, FontMain, "%4d", StatusMainChar[MP]);
+								else if (MPBarWidth <= 56 && MPBarWidth > 0) DrawFormatStringToHandle(275, 202, Yellow, FontMain, "%4d", StatusMainChar[MP]);
+								else if (MPBarWidth == 0) DrawFormatStringToHandle(275, 202, Red, FontMain, "%4d", StatusMainChar[MP]);
+								DrawFormatStringToHandle(275, 166, White, FontMain, "    /%4d", StatusMainChar[HPMAX]);
+								DrawFormatStringToHandle(275, 202, White, FontMain, "    /%4d", StatusMainChar[MPMAX]);
 								DrawStringToHandle(472, 95, "現在の経験値", Blue, FontMain);
 								DrawFormatStringToHandle(662, 135, White, FontMain, "%6d", StatusMainChar[EXP]);
 								DrawStringToHandle(472, 166, "次のレベルまで", Blue, FontMain);
@@ -1550,7 +1706,10 @@ void Menu(void) {
 				PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK);
 				Option();
 			}
-			else if (SelectMenu[MAINMENU] == 198) { PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK); }
+			else if (SelectMenu[MAINMENU] == 198) {
+				PlaySoundMem(SE[SAVE], DX_PLAYTYPE_BACK);
+				Save();
+			}
 			else if (SelectMenu[MAINMENU] == 234) {
 				if (Cheat == FALSE) PlaySoundMem(SE[BUZZER], DX_PLAYTYPE_BACK);
 				else if (Cheat == TRUE) { PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK); }
@@ -1593,6 +1752,9 @@ void Title(void) {
 		ScreenFlip();
 		LogBoxY = LogBoxY + 7;
 	} while (LogBoxY <= 70);
+	int saveExist;
+	if (PathFileExistsA("save.dat") == TRUE) { saveExist = TRUE, SelectY = 434; }
+	else if (PathFileExistsA("save.dat") == FALSE) saveExist = FALSE;
 	while (1) {
 		ClearDrawScreen();
 		DrawGraph(0, 0, TitleGraph, FALSE);
@@ -1609,7 +1771,8 @@ void Title(void) {
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		DrawStringToHandle(310, 405, "ニューゲーム", White, FontMain);
-		DrawStringToHandle(310, 440, "コンティニュー", Gray, FontMain);
+		if (saveExist == FALSE)	DrawStringToHandle(310, 440, "コンティニュー", Gray, FontMain);
+		else if (saveExist == TRUE)	DrawStringToHandle(310, 440, "コンティニュー", White, FontMain);
 		DrawStringToHandle(310, 475, "オプション", White, FontMain);
 		ScreenFlip();
 
@@ -1627,9 +1790,20 @@ void Title(void) {
 		else if (Key[KEY_INPUT_RETURN] == 1 || Key[KEY_INPUT_Z] == 1) {
 			if (SelectY == 400) {
 				PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK);
+				MapNumber = 0;
+				MapX = 2; MapY = 2;
+				CharMainX = 9; CharMainY = 7; Direction = 1;
+				CharMainRightX = CharMainX * 48 - 48;
+				CharMainRightY = CharMainY * 48 - 48;
+				MapRightX = MapX * -48 + 48;
+				MapRightY = MapY * -48 + 48;
+				StatusSet();
 				break;
 			}
-			else if (SelectY == 434) { PlaySoundMem(SE[BUZZER], DX_PLAYTYPE_BACK); }
+			else if (SelectY == 434) {
+				if (saveExist == FALSE)	PlaySoundMem(SE[BUZZER], DX_PLAYTYPE_BACK);
+				else if (saveExist == TRUE) { PlaySoundMem(SE[LOAD], DX_PLAYTYPE_BACK); Load(); break; }
+			}
 			else if (SelectY == 469) {
 				PlaySoundMem(SE[DECISION], DX_PLAYTYPE_BACK);
 				do {
@@ -2266,12 +2440,12 @@ void Move(void) {
 	CharMainY = (CharMainRightY + 48) / 48;
 	}
 
-	//マップ移動処理
-	void MAPMove(void) {
-		if (MapNumber == 0) {
+//マップ移動処理
+void MAPMove(void) {
+		if (MapNumber == STARTMAP) {
 			if (MapX == 2 && MapY == 3) {
-				if (CharMainX == 9 && CharMainY == 13 && Direction == FACEDOWN) {
-					MapNumber = 1; MapX = 1; MapY = 5; CharMainX = 6; CharMainY = 7;
+				if (CharMainX == 9 && CharMainY == 13) {
+					MapNumber = TOWN1MAP; MapX = 1; MapY = 5; CharMainX = 6; CharMainY = 7, Direction = FACEDOWN;
 					MapRightX = MapX * -48 + 48;
 					MapRightY = MapY * -48 + 48;
 					CharMainRightX = CharMainX * 48 - 48;
@@ -2297,10 +2471,10 @@ void Move(void) {
 				}
 			}
 		}
-		else if (MapNumber == 1) {
+		else if (MapNumber == TOWN1MAP) {
 			if (MapX == 1 && MapY == 4) {
-				if (CharMainX == 6 && CharMainY == 7 && Direction == FACEUP) {
-					MapNumber = 0; MapX = 2; MapY = 3; CharMainX = 9; CharMainY = 12;
+				if (CharMainX == 6 && CharMainY == 7) {
+					MapNumber = STARTMAP; MapX = 2; MapY = 3; CharMainX = 9; CharMainY = 12, Direction = FACEUP;
 					MapRightX = MapX * -48 + 48;
 					MapRightY = MapY * -48 + 48;
 					CharMainRightX = CharMainX * 48 - 48;
@@ -2325,5 +2499,117 @@ void Move(void) {
 					SetDrawBright(255, 255, 255);
 				}
 			}
+			if (MapX == 7 && MapY == 27) {
+				if (CharMainX == 9 && CharMainY == 7) {
+					MapNumber = TOWN1INN1FMAP; MapX = 3; MapY = 8; CharMainX = 9; CharMainY = 12, Direction = FACEUP;
+					MapRightX = MapX * -48 + 48;
+					MapRightY = MapY * -48 + 48;
+					CharMainRightX = CharMainX * 48 - 48;
+					CharMainRightY = CharMainY * 48 - 48;
+
+					PlaySoundMem(SE[MOVE], DX_PLAYTYPE_BACK);
+					GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MoveScreen);
+					int Bright = 255;
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						DrawGraph(0, 0, MoveScreen, FALSE);
+						ScreenFlip();
+						Bright = Bright - 10;
+					} while (Bright >= 0);
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						MAPDraw(MapNumber, MapRoop);
+						CharMain(10);
+						ScreenFlip();
+						Bright = Bright + 10;
+					} while (Bright <= 255);
+					SetDrawBright(255, 255, 255);
+				}
+			}
+		}
+		else if (MapNumber == TOWN1INN1FMAP) {
+			if (MapX == 3 && MapY == 8) {
+				if (CharMainX == 9 && CharMainY == 13) {
+					MapNumber = TOWN1MAP; MapX = 7; MapY = 28; CharMainX = 9; CharMainY = 7, Direction = FACEDOWN;
+					MapRightX = MapX * -48 + 48;
+					MapRightY = MapY * -48 + 48;
+					CharMainRightX = CharMainX * 48 - 48;
+					CharMainRightY = CharMainY * 48 - 48;
+
+					PlaySoundMem(SE[MOVE], DX_PLAYTYPE_BACK);
+					GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MoveScreen);
+					int Bright = 255;
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						DrawGraph(0, 0, MoveScreen, FALSE);
+						ScreenFlip();
+						Bright = Bright - 10;
+					} while (Bright >= 0);
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						MAPDraw(MapNumber, MapRoop);
+						CharMain(1);
+						ScreenFlip();
+						Bright = Bright + 10;
+					} while (Bright <= 255);
+					SetDrawBright(255, 255, 255);
+				}
+			}
+			if (MapX == 5 && MapY == 8) {
+				if (CharMainX == 12 && CharMainY == 8) {
+					MapNumber = TOWN1INN2FMAP; MapX = 1; MapY = 3; CharMainX = 12; CharMainY = 10, Direction = FACELEFT;
+					MapRightX = MapX * -48 + 48;
+					MapRightY = MapY * -48 + 48;
+					CharMainRightX = CharMainX * 48 - 48;
+					CharMainRightY = CharMainY * 48 - 48;
+
+					PlaySoundMem(SE[MOVE], DX_PLAYTYPE_BACK);
+					GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MoveScreen);
+					int Bright = 255;
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						DrawGraph(0, 0, MoveScreen, FALSE);
+						ScreenFlip();
+						Bright = Bright - 10;
+					} while (Bright >= 0);
+					do {
+						SetDrawBright(Bright, Bright, Bright);
+						MAPDraw(MapNumber, MapRoop);
+						CharMain(4);
+						ScreenFlip();
+						Bright = Bright + 10;
+					} while (Bright <= 255);
+					SetDrawBright(255, 255, 255);
+				}
+			}
+		}
+		else if (MapNumber == TOWN1INN2FMAP) {
+				if (MapX == 1 && MapY == 3) {
+					if (CharMainX == 13 && CharMainY == 10 && Direction != FACELEFT) {
+						MapNumber = TOWN1INN1FMAP; MapX = 5; MapY = 8; CharMainX = 11; CharMainY = 8, Direction = FACELEFT;
+						MapRightX = MapX * -48 + 48;
+						MapRightY = MapY * -48 + 48;
+						CharMainRightX = CharMainX * 48 - 48;
+						CharMainRightY = CharMainY * 48 - 48;
+
+						PlaySoundMem(SE[MOVE], DX_PLAYTYPE_BACK);
+						GetDrawScreenGraph(0, 0, 48 * 17, 48 * 13, MoveScreen);
+						int Bright = 255;
+						do {
+							SetDrawBright(Bright, Bright, Bright);
+							DrawGraph(0, 0, MoveScreen, FALSE);
+							ScreenFlip();
+							Bright = Bright - 10;
+						} while (Bright >= 0);
+						do {
+							SetDrawBright(Bright, Bright, Bright);
+							MAPDraw(MapNumber, MapRoop);
+							CharMain(4);
+							ScreenFlip();
+							Bright = Bright + 10;
+						} while (Bright <= 255);
+						SetDrawBright(255, 255, 255);
+					}
+				}
 		}
 	}

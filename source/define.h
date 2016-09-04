@@ -11,6 +11,8 @@
 #define BUZZER 3
 #define EQUIP 4
 #define MOVE 5
+#define SAVE 6
+#define LOAD 7
 
 //画像
 //顔グラフィック
@@ -18,8 +20,11 @@
 //キャラ指定
 #define CHARMAIN 0
 //マップ
+#define MAPCOUNT 4
 #define STARTMAP 0
 #define TOWN1MAP 1
+#define TOWN1INN1FMAP 2
+#define TOWN1INN2FMAP 3
 
 //キャラ向き
 #define FACEUP 0
@@ -49,3 +54,10 @@
 #define AGI 10
 #define LUCK 11
 #define NEXTLV 12
+
+//イベント
+#define EVCOUNT 4
+#define STARTMAPEV1 0
+#define TOWN1MAPEV1 1
+#define TOWN1INN1FMAPEV1 2
+#define TOWN1INN1FMAPEV2 3
